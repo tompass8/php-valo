@@ -1,49 +1,135 @@
-/* Palette de couleurs Valorant */
 :root {
     --valo-red: #ff4655;
     --valo-black: #0f1923;
     --valo-white: #ece8e1;
     --valo-gray: #1f2326;
+    --valo-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
     background-color: var(--valo-black);
     color: var(--valo-white);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'DINNextW1G', 'Segoe UI', sans-serif; /* Police proche de Valo */
     margin: 0;
-    padding: 0;
+    text-transform: uppercase; /* Tout en majuscule pour le look jeu */
 }
 
-header {
-    background-color: var(--valo-red);
-    padding: 1rem;
-}
-
-nav a {
-    color: var(--valo-white);
-    text-decoration: none;
-    font-weight: bold;
-    margin-right: 20px;
-    text-transform: uppercase;
-}
-
-.profile-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    border-left: 5px solid var(--valo-red);
-    background-color: var(--valo-gray);
-}
-
-h1 {
+h1, h2, h3 {
     text-transform: uppercase;
     font-style: italic;
+    letter-spacing: 2px;
+}
+
+/* Grille pour les succès */
+.achievements-grid {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* Badge biseauté Valorant */
+.badge-valo {
+    background-color: var(--valo-red);
+    color: white;
+    padding: 8px 16px;
+    font-size: 0.75em;
+    font-weight: bold;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+
+    nav a {
+        color: var(--valo-white);
+        text-decoration: none;
+        margin-right: 20px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    nav a:hover {
+        color: var(--valo-red);
+    }
+
+/* --- LE BOUTON BISEAUTÉ --- */
+.btn-valo {
+    background-color: var(--valo-red);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    /* Effet de coin coupé typique */
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+    transition: 0.3s;
+}
+
+.btn-valo:hover {
+    background-color: white;
     color: var(--valo-red);
 }
 
-.stats-card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 20px;
+/* --- LE CONTENEUR DE CARTE --- */
+.stats-card, .login-box {
+    background: var(--valo-gray);
+    border: 1px solid var(--valo-border);
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
 }
+
+/* Petit détail : la barre rouge sur le côté */
+.stats-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--valo-red);
+}
+
+/* --- INPUTS --- */
+input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--valo-border);
+    color: white;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--valo-red);
+}
+
+.error-banner {
+    background: rgba(255, 70, 85, 0.2);
+    border: 1px solid var(--valo-red);
+    padding: 15px;
+    margin-bottom: 20px;
+    color: var(--valo-red);
+    font-weight: bold;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    color: #888;
+    margin-bottom: 30px;
+    font-size: 0.9em;
+}
+
+.footer-link {
+    margin-top: 25px;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+.footer-link a {
+    color: var(--valo-red);
+    text-decoration: none;
+    font-weight: bold;
+} }

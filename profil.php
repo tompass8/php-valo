@@ -29,7 +29,49 @@ include 'templates/header.php';
         <div class="achievements">
             <h3>Succès</h3>
         </div>
+
+        <div class="achievements-grid">
+            <div class="badge-valo">PREMIER SANG</div>
+            <div class="badge-valo">MVP</div>
+            <div class="badge-valo">CLUTCH KING</div>
+        </div>
     </div>
+
+<div class="achievements">
+    <h3>Mes Jeux</h3>
+    <div class="game-grid">
+
+        <div class="game-card">
+            <div class="card-banner">
+                <div class="card-tag">VALORANT</div>
+                <div style="background: #444; width:100%; height:100%;"></div>
+            </div>
+            <div class="card-content">
+                <h4>AGENT : BAN</h4>
+                <div class="card-stats">
+                    <div class="stat-row"><span>Heures :</span> <strong>415h</strong></div>
+                    <div class="stat-row"><span>Rang :</span> <strong>Diamant 2</strong></div>
+                    <div class="stat-row"><span>Main :</span> <strong>Jett</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="card-banner">
+                <div class="card-tag">CYBERPUNK</div>
+                <div style="background: #555; width:100%; height:100%;"></div>
+            </div>
+            <div class="card-content">
+                <h4>MERC : V</h4>
+                <div class="card-stats">
+                    <div class="stat-row"><span>Heures :</span> <strong>120h</strong></div>
+                    <div class="stat-row"><span>Style :</span> <strong>Netrunner</strong></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <?php include 'templates/footer.php'; ?>
 
