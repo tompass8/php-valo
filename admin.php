@@ -3,13 +3,9 @@ session_start();
 require 'db.php';
 
 // --- SÉCURITÉ : VÉRIFICATION DU RÔLE ---
-<<<<<<< Updated upstream
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: admin.php');
-=======
+// Résolution du conflit : On redirige vers index.php si l'accès est refusé
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: index.php');
->>>>>>> Stashed changes
     exit();
 }
 
@@ -167,7 +163,8 @@ include 'templates/header.php';
                     <th>IDENTITÉ (PSEUDO)</th>
                     <th>CONTACT (EMAIL)</th>
                     <th>ACCRÉDITATION</th>
-                    <th>GESTION</th> </tr>
+                    <th>GESTION</th>
+                </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($users as $u): ?>
