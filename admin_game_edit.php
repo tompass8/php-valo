@@ -1,45 +1,85 @@
 <?php
+// --- 1. LOGIQUE (PHP) ---
 session_start();
 require __DIR__ . '/db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: index.php'); exit();
+// Sécurité : Accès Admin uniquement
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+    header('Location: index.php');
+    exit();
 }
 
-$id = intval($_GET['id']);
+// Récupération et validation de l'ID
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+if ($id <= 0) {
+    header('Location: admin.php');
+    exit();
+}
 
-// Mise à jour
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $stmt = $pdo->prepare("UPDATE games SET name=?, type=?, description=?, image_url=? WHERE id=?");
+// TRAITEMENT DU FORMULAIRE (Mise à jour)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // On utilise 'image' pour correspondre à ta structure de BDD actuelle
+    $stmt = $pdo->prepare("UPDATE games SET name=?, type=?, description=?, image=? WHERE id=?");
     $stmt->execute([
-        $_POST['name'], $_POST['type'], $_POST['description'], $_POST['image_url'], $id
+            $_POST['name'],
+            $_POST['type'],
+            $_POST['description'],
+            $_POST['image_url'], // On garde le nom du champ POST pour la cohérence
+            $id
     ]);
-    header('Location: admin.php'); exit();
+
+    header('Location: admin.php');
+    exit();
 }
 
-// Récupération des données existantes
+// RÉCUPÉRATION DES DONNÉES ACTUELLES
 $stmt = $pdo->prepare("SELECT * FROM games WHERE id = ?");
 $stmt->execute([$id]);
 $game = $stmt->fetch();
 
+if (!$game) {
+    header('Location: admin.php');
+    exit();
+}
+
+// Configuration du template
+$page_title = "Modifier Mission : " . htmlspecialchars($game['name']);
+$page_css = "admin";
+
 include 'templates/header.php';
 ?>
-    <div class="main-container" style="padding: 20px;">
-        <h1>Modifier : <?= htmlspecialchars($game['name']) ?></h1>
-        <form method="POST">
-            <label>Nom :</label>
-            <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" required style="display:block; margin:10px 0;"><br>
 
-            <label>Type :</label>
-            <input type="text" name="type" value="<?= htmlspecialchars($game['type']) ?>" required style="display:block; margin:10px 0;"><br>
+    <div class="add-container">
+        <div class="form-card">
+            <span class="subtitle">// PROTOCOLE DE MODIFICATION</span>
+            <h1>MODIFIER LA MISSION</h1>
 
-            <label>Description :</label>
-            <textarea name="description" style="display:block; margin:10px 0; width:300px; height:100px;"><?= htmlspecialchars($game['description']) ?></textarea><br>
+            <form method="POST">
+                <div class="form-group">
+                    <label>NOM DE CODE (Jeu)</label>
+                    <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" required>
+                </div>
 
-            <label>Image URL :</label>
-            <input type="text" name="image_url" value="<?= htmlspecialchars($game['image_url']) ?>" style="display:block; margin:10px 0;"><br>
+                <div class="form-group">
+                    <label>TYPE DE MISSION</label>
+                    <input type="text" name="type" value="<?= htmlspecialchars($game['type']) ?>" required>
+                </div>
 
-            <button type="submit" class="btn" style="background-color:#ff4655; color:white; padding:10px; border:none;">Sauvegarder</button>
-        </form>
+                <div class="form-group">
+                    <label>VISUEL TACTIQUE (URL ou Nom de fichier)</label>
+                    <input type="text" name="image_url" value="<?= htmlspecialchars($game['image'] ?? $game['image_url'] ?? '') ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>BRIEFING (Description)</label>
+                    <textarea name="description"><?= htmlspecialchars($game['description']) ?></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">SAUVEGARDER LES MODIFICATIONS</button>
+
+                <a href="admin.php" class="btn-cancel">ANNULER ET RETOURNER AU QG</a>
+            </form>
+        </div>
     </div>
+
 <?php include 'templates/footer.php'; ?>

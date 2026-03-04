@@ -1,32 +1,28 @@
 <?php
-// --- 1. LOGIQUE (BACKEND) ---
+// --- 1. LOGIQUE (PHP) ---
 session_start();
-require 'db.php'; // Connexion à la base de données
+require 'db.php';
 
-// On récupère la liste des jeux depuis la base de données
-// On stocke le résultat dans la variable $games
 $stmt = $pdo->query("SELECT * FROM games ORDER BY id DESC");
 $games = $stmt->fetchAll();
 
-// Configuration de la page
 $page_title = "Accueil - Protocol Valorant";
 
-// On inclut le header (Menu + CSS)
 include 'templates/header.php';
 ?>
 
     <section class="hero">
-        <p style="color: var(--val-red); font-weight: bold; letter-spacing: 2px;">// STATUT : CONNECTÉ</p>
+        <p class="hero-status">// STATUT : CONNECTÉ</p>
 
-        <h1 style="font-size: 4em; text-transform: uppercase; margin: 10px 0; line-height: 1;">
-            BIENVENUE, AGENT <span style="color: white;"><?= htmlspecialchars($_SESSION['pseudo'] ?? 'INCONNU') ?></span>
+        <h1 class="hero-title">
+            BIENVENUE, AGENT <span><?= htmlspecialchars($_SESSION['pseudo'] ?? 'INCONNU') ?></span>
         </h1>
 
-        <p style="color: #888; font-size: 1.2em; margin-bottom: 40px;">
+        <p class="hero-subtitle">
             Prêt à déployer ? Consultez les missions disponibles ou gérez votre profil.
         </p>
 
-        <div style="display: flex; justify-content: center; gap: 20px;">
+        <div class="hero-actions">
             <a href="profil.php" class="btn-val">MON DOSSIER</a>
             <?php if(($_SESSION['role'] ?? '') === 'admin'): ?>
                 <a href="admin.php" class="btn-ghost">ADMINISTRATION</a>
@@ -35,15 +31,12 @@ include 'templates/header.php';
     </section>
 
     <div class="container">
-        <h2 style="border-left: 4px solid var(--val-red); padding-left: 15px; text-transform: uppercase; margin-bottom: 30px;">
-            Missions Disponibles
-        </h2>
+        <h2 class="section-title">Missions Disponibles</h2>
 
         <div class="missions-grid">
             <?php if (!empty($games)): ?>
                 <?php foreach ($games as $game): ?>
                     <div class="mission-card">
-
                         <div class="card-img-wrapper">
                             <?php if (!empty($game['image']) && file_exists('assets/img/games/' . $game['image'])): ?>
                                 <img src="assets/img/games/<?= htmlspecialchars($game['image']) ?>"
@@ -58,20 +51,16 @@ include 'templates/header.php';
 
                         <div class="card-content">
                             <span class="mission-type">// TYPE : <?= htmlspecialchars($game['type']) ?></span>
-
                             <h3><?= htmlspecialchars($game['name']) ?></h3>
-
                             <p class="mission-desc">
                                 <?= htmlspecialchars($game['description'] ?? 'Aucune information tactique disponible.') ?>
                             </p>
-
                             <a href="#" class="btn-ghost">DÉTAILS DU JEU</a>
                         </div>
-
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Aucune mission disponible pour le moment.</p>
+                <p class="no-results">Aucune mission disponible pour le moment.</p>
             <?php endif; ?>
         </div>
     </div>

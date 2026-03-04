@@ -1,23 +1,39 @@
+/* assets/css/admin.css */
+
 .admin-container {
     padding: 40px;
     min-height: 100vh;
 }
 
-h1 {
+/* --- TITRES ET TEXTES --- */
+.admin-main-title {
     font-size: 2.5em;
     border-left: 5px solid var(--val-red);
     padding-left: 20px;
     text-transform: uppercase;
-    margin-bottom: 30px;
+    margin-bottom: 5px; /* Réduit pour laisser place au sous-titre */
     color: white;
+}
+
+.highlight-red {
+    color: var(--val-red);
+}
+
+.admin-subtitle {
+    margin-bottom: 50px;
+    color: #888;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 h2 {
     color: #bdbdbd;
     text-transform: uppercase;
     font-size: 1.5em;
+    margin: 0;
 }
 
+/* --- SECTIONS ET HEADERS --- */
 .admin-section {
     background-color: var(--val-card);
     padding: 30px;
@@ -35,7 +51,30 @@ h2 {
     border-right: 2px solid var(--val-red);
 }
 
-.val-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header.simple {
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.count-info {
+    color: #666;
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+/* --- TABLEAUX --- */
+.val-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
 .val-table th {
     background: #2c3540;
@@ -46,12 +85,23 @@ h2 {
     border-bottom: 2px solid var(--val-red);
 }
 
+/* Largeurs de colonnes déportées ici */
+.col-name { width: 40%; }
+.col-type { width: 30%; }
+.col-actions { width: 30%; }
+
 .val-table td {
     padding: 15px;
     border-bottom: 1px solid #333;
     color: #ddd;
 }
 
+.actions-cell {
+    display: flex;
+    gap: 5px;
+}
+
+/* --- BOUTONS --- */
 .btn-val {
     display: inline-block;
     background-color: var(--val-red);
@@ -93,7 +143,6 @@ h2 {
 .btn-danger {
     color: var(--val-red);
     border-color: var(--val-red);
-    margin-left: 5px;
 }
 
 .btn-danger:hover {
@@ -101,6 +150,142 @@ h2 {
     color: white;
 }
 
-.badge { padding: 4px 8px; font-weight: bold; font-size: 0.8em; text-transform: uppercase; }
-.badge-admin { background: rgba(255, 70, 85, 0.2); color: var(--val-red); border: 1px solid var(--val-red); }
-.badge-user { background: #333; color: #aaa; }
+/* --- BADGES --- */
+.badge {
+    padding: 4px 8px;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.badge-admin {
+    background: rgba(255, 70, 85, 0.2);
+    color: var(--val-red);
+    border: 1px solid var(--val-red);
+}
+
+.badge-user {
+    background: #333;
+    color: #aaa;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  AJOUT (admin_game_add.php) */
+
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 20px;
+}
+
+.form-card {
+    background: var(--val-card);
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    border-left: 5px solid var(--val-red);
+    border-top: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.subtitle {
+    color: #888;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--val-dark);
+    border: 1px solid #444;
+    color: white;
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--val-red);
+    background-color: #16202a;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Bouton Spécifique au formulaire */
+.btn-submit {
+    background-color: var(--val-red);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    /* La découpe Valorant */
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
+    transition: 0.2s;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+.btn-submit:hover {
+    background-color: white;
+    color: var(--val-red);
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-cancel:hover {
+    color: white;
+    text-decoration: underline;
+}

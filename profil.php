@@ -1,4 +1,5 @@
 <?php
+// --- 1. LOGIQUE (PHP) ---
 session_start();
 require 'db.php';
 
@@ -10,20 +11,31 @@ if (!isset($_SESSION['user_id'])) {
 
 $id = $_SESSION['user_id'];
 
-// 1. Récupération User
+// Traitement du formulaire (Mise à jour)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profil'])) {
+    $nouveau_genre = $_POST['genre'];
+    $stmt = $pdo->prepare("UPDATE users SET genre = ? WHERE id = ?");
+    $stmt->execute([$nouveau_genre, $id]);
+
+    header("Location: profil.php");
+    exit();
+}
+
+// Récupération des données
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 
-if (!$user) die("Erreur : Agent introuvable.");
+if (!$user) {
+    die("Erreur : Utilisateur introuvable.");
+}
 
-// 2. Récupération Succès
 $stmtSucces = $pdo->query("SELECT * FROM achievements");
 $succes = $stmtSucces->fetchAll();
 
-// Configuration de la page
+// Configuration du template
 $page_title = "Dossier Agent - " . htmlspecialchars($user['pseudo']);
-$page_css = "profil"; // Charge assets/css/profil.css
+$page_css = "profil";
 
 include 'templates/header.php';
 ?>
@@ -31,42 +43,35 @@ include 'templates/header.php';
     <div class="profil-container">
 
         <h1 class="agent-title">
-            AGENT : <span style="color: white;"><?= htmlspecialchars($user['pseudo']) ?></span>
+            AGENT : <span class="highlight-white"><?= htmlspecialchars($user['pseudo']) ?></span>
         </h1>
 
         <div class="profile-grid">
 
-            <div class="card-dossier">
-                <h2>// DOSSIER PERSONNEL</h2>
-                <p><strong>Matricule :</strong> <?= htmlspecialchars($user['email']) ?></p>
-                <p><strong>Temps de service :</strong> <?= rand(50, 5000) ?> H</p>
-                <p><strong>Dernière connexion :</strong> <?= date('d/m/Y H:i') ?></p>
+            <div class="card card-dossier">
+                <h2 class="card-title">// DOSSIER PERSONNEL</h2>
+                <div class="dossier-info">
+                    <p><strong>Matricule (Email) :</strong> <?= htmlspecialchars($user['email']) ?></p>
+                    <p><strong>Temps de service (Jeu) :</strong> <?= rand(50, 5000) ?> heures</p>
+                </div>
+                <hr class="separator">
             </div>
 
-            <div class="card-dossier">
-                <h2>// MÉDAILLES & SUCCÈS</h2>
+            <div class="card card-achievements">
+                <h2 class="card-title highlight-border">// MÉDAILLES & SUCCÈS</h2>
 
                 <div class="achievements-grid">
                     <?php if ($succes): ?>
                         <?php foreach ($succes as $s): ?>
                             <div class="achievement-item">
-                                <?php if (!empty($s['image'])): ?>
-                                    <img src="assets/img/achievements/<?= htmlspecialchars($s['image']) ?>"
-                                         alt="<?= htmlspecialchars($s['name']) ?>"
-                                         class="achievement-icon">
-                                <?php else: ?>
-                                    <img src="assets/img/default_badge.png" class="achievement-icon" alt="Locked">
-                                <?php endif; ?>
-
-                                <span class="achievement-name"><?= htmlspecialchars($s['name']) ?></span>
-
+                                <strong class="achievement-name"><?= htmlspecialchars($s['name']) ?></strong>
                                 <p class="achievement-desc">
-                                    <?= htmlspecialchars($s['description'] ?? 'Aucune description.') ?>
+                                    <?= htmlspecialchars($s['description']) ?>
                                 </p>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p style="color:#888;">Aucune médaille obtenue pour le moment.</p>
+                        <p class="no-data-text">Aucun succès disponible.</p>
                     <?php endif; ?>
                 </div>
             </div>

@@ -1,84 +1,100 @@
+/* assets/css/profil.css */
 
 .profil-container {
     padding: 40px;
-    color: var(--val-text);
     max-width: 1200px;
     margin: 0 auto;
+    color: white;
 }
 
+/* Titre principal Agent */
 .agent-title {
+    color: var(--val-red);
     font-size: 3em;
     text-transform: uppercase;
     border-left: 5px solid var(--val-red);
     padding-left: 20px;
     margin-bottom: 40px;
-    line-height: 1;
 }
 
+.highlight-white {
+    color: white;
+}
+
+/* Grille de mise en page */
 .profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+    display: flex;
     gap: 40px;
+    flex-wrap: wrap;
 }
 
-/* --- CARTE DOSSIER --- */
+/* Cartes (Dossier et Succès) */
+.card {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+}
+
 .card-dossier {
     background: var(--val-card);
-    padding: 30px;
-    border: 1px solid #333;
-    position: relative;
+    border-left: 5px solid var(--val-red);
 }
 
-.card-dossier h2 {
-    color: #bdbdbd;
-    font-size: 1.2em;
+.card-title {
+    text-transform: uppercase;
+    font-size: 1.5em;
     margin-top: 0;
+}
+
+.highlight-border {
     border-bottom: 2px solid var(--val-red);
     display: inline-block;
-    padding-bottom: 5px;
 }
 
-/* --- GRILLE DES SUCCÈS --- */
+.dossier-info p {
+    margin: 15px 0;
+    font-size: 1.1em;
+}
+
+.separator {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 20px 0;
+}
+
+/* Liste des succès */
 .achievements-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Grille responsive */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
     margin-top: 20px;
 }
 
 .achievement-item {
     background: #0f1923;
-    border: 1px solid #333;
     padding: 15px;
-    text-align: center;
-    transition: 0.3s;
+    border: 1px solid #333;
+    transition: border-color 0.3s ease;
 }
 
 .achievement-item:hover {
     border-color: var(--val-red);
-    transform: translateY(-5px);
-}
-
-/* L'image du succès */
-.achievement-icon {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    margin-bottom: 10px;
-    filter: drop-shadow(0 0 5px rgba(255, 70, 85, 0.5)); /* Lueur rouge */
 }
 
 .achievement-name {
-    display: block;
     color: var(--val-red);
-    font-weight: bold;
-    font-size: 0.9em;
-    text-transform: uppercase;
+    display: block;
     margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
 .achievement-desc {
-    font-size: 0.75em;
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 0;
+}
+
+.no-data-text {
     color: #888;
-    line-height: 1.2;
+    font-style: italic;
 }

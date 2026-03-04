@@ -1,36 +1,37 @@
 <?php
+// --- 1. LOGIQUE (PHP) ---
 session_start();
 require 'db.php';
 
-// --- SÉCURITÉ ---
+// Sécurité : Accès restreint aux administrateurs
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: index.php');
     exit();
 }
 
-// --- LOGIQUE DE DONNÉES ---
+// Récupération des données (Jeux et Utilisateurs)
 $stmt = $pdo->query("SELECT * FROM games ORDER BY name ASC");
 $games = $stmt->fetchAll();
 
 $stmtUsers = $pdo->query("SELECT * FROM users ORDER BY created_at DESC");
 $users = $stmtUsers->fetchAll();
 
-// --- CONFIGURATION DE LA PAGE ---
+// Configuration de la page
 $page_title = "Dashboard Admin - Valorant";
-$page_css = "admin"; // <--- Indique quel fichier CSS charger
+$page_css = "admin";
 
 include 'templates/header.php';
 ?>
 
     <div class="admin-container">
-        <h1>Dashboard <span style="color: var(--val-red);">ADMIN</span></h1>
-        <p style="margin-bottom: 50px; color: #888;">// GESTION DU PROTOCOLE VALORANT</p>
+        <h1 class="admin-main-title">Dashboard <span class="highlight-red">ADMIN</span></h1>
+        <p class="admin-subtitle">// GESTION DU PROTOCOLE VALORANT</p>
 
         <section class="admin-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                <div>
+            <div class="section-header">
+                <div class="header-info">
                     <h2>Liste des Jeux</h2>
-                    <span style="color:#666; font-size:0.9em;">Total : <?= count($games) ?> missions</span>
+                    <span class="count-info">Total : <?= count($games) ?> missions</span>
                 </div>
                 <a href="admin_game_add.php" class="btn-val">+ NOUVEAU JEU</a>
             </div>
@@ -38,9 +39,9 @@ include 'templates/header.php';
             <table class="val-table">
                 <thead>
                 <tr>
-                    <th width="40%">NOM DU JEU</th>
-                    <th width="30%">TYPE</th>
-                    <th width="30%">ACTIONS</th>
+                    <th class="col-name">NOM DU JEU</th>
+                    <th class="col-type">TYPE</th>
+                    <th class="col-actions">ACTIONS</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,7 +49,7 @@ include 'templates/header.php';
                     <tr>
                         <td><strong><?= htmlspecialchars($game['name']) ?></strong></td>
                         <td><?= htmlspecialchars($game['type']) ?></td>
-                        <td>
+                        <td class="actions-cell">
                             <a href="admin_game_edit.php?id=<?= $game['id'] ?>" class="btn-ghost">ÉDITER</a>
                             <a href="admin_game_delete.php?id=<?= $game['id'] ?>" class="btn-ghost btn-danger" onclick="return confirm('Supprimer ce jeu ?');">SUPPRIMER</a>
                         </td>
@@ -59,9 +60,9 @@ include 'templates/header.php';
         </section>
 
         <section class="admin-section">
-            <div style="margin-bottom: 20px;">
+            <div class="section-header simple">
                 <h2>Agents Inscrits</h2>
-                <span style="color:#666; font-size:0.9em;">Total : <?= count($users) ?> agents</span>
+                <span class="count-info">Total : <?= count($users) ?> agents</span>
             </div>
 
             <table class="val-table">

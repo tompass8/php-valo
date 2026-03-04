@@ -250,3 +250,51 @@ header {
     color: var(--val-dark);
     transform: translateY(-2px);
 }
+
+/* --- COMPOSANTS HERO --- */
+.hero-status {
+    color: var(--val-red);
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    font-size: 4em;
+    text-transform: uppercase;
+    margin: 10px 0;
+    line-height: 1;
+    font-weight: 900;
+}
+
+.hero-title span {
+    color: white;
+}
+
+.hero-subtitle {
+    color: #888;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* --- TITRES DE SECTION --- */
+.section-title {
+    border-left: 4px solid var(--val-red);
+    padding-left: 15px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+.no-results {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    grid-column: 1 / -1;
+}
