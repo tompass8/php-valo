@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require __DIR__ . '/db.php';
 
 // Sécurité
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {

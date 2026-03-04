@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require __DIR__ . '/db.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: index.php'); exit();
@@ -24,14 +24,22 @@ $game = $stmt->fetch();
 
 include 'templates/header.php';
 ?>
-    <div class="main-container">
+    <div class="main-container" style="padding: 20px;">
         <h1>Modifier : <?= htmlspecialchars($game['name']) ?></h1>
         <form method="POST">
-            <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" required><br>
-            <input type="text" name="type" value="<?= htmlspecialchars($game['type']) ?>" required><br>
-            <textarea name="description"><?= htmlspecialchars($game['description']) ?></textarea><br>
-            <input type="text" name="image_url" value="<?= htmlspecialchars($game['image_url']) ?>"><br>
-            <button type="submit" class="btn">Sauvegarder</button>
+            <label>Nom :</label>
+            <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" required style="display:block; margin:10px 0;"><br>
+
+            <label>Type :</label>
+            <input type="text" name="type" value="<?= htmlspecialchars($game['type']) ?>" required style="display:block; margin:10px 0;"><br>
+
+            <label>Description :</label>
+            <textarea name="description" style="display:block; margin:10px 0; width:300px; height:100px;"><?= htmlspecialchars($game['description']) ?></textarea><br>
+
+            <label>Image URL :</label>
+            <input type="text" name="image_url" value="<?= htmlspecialchars($game['image_url']) ?>" style="display:block; margin:10px 0;"><br>
+
+            <button type="submit" class="btn" style="background-color:#ff4655; color:white; padding:10px; border:none;">Sauvegarder</button>
         </form>
     </div>
 <?php include 'templates/footer.php'; ?>

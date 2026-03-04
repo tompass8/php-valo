@@ -3,9 +3,8 @@ session_start();
 require 'db.php';
 
 // --- SÉCURITÉ : VÉRIFICATION DU RÔLE ---
-// Si l'utilisateur n'est pas connecté OU qu'il n'est pas 'admin'
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: index.php'); // On le renvoie à l'accueil
+    header('Location: index.php');
     exit();
 }
 
@@ -20,13 +19,13 @@ $users = $stmtUsers->fetchAll();
 include 'templates/header.php';
 ?>
 
-    <div class="main-container">
+    <div class="main-container" style="padding: 20px;">
         <h1>Dashboard ADMIN - Valorant Protocol</h1>
 
         <section class="admin-section" style="margin-bottom: 40px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2>Liste des Missions (Jeux)</h2>
-                <a href="admin_game_add.php" class="btn" style="background-color:green;">+ Ajouter un jeu</a>
+                <a href="admin_game_add.php" class="btn" style="background-color:green; color:white; padding:10px; text-decoration:none;">+ Ajouter un jeu</a>
             </div>
 
             <table border="1" style="width:100%; margin-top:10px; border-collapse:collapse;">

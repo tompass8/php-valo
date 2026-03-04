@@ -1,0 +1,49 @@
+/* Palette de couleurs Valorant */
+:root {
+    --valo-red: #ff4655;
+    --valo-black: #0f1923;
+    --valo-white: #ece8e1;
+    --valo-gray: #1f2326;
+}
+
+body {
+    background-color: var(--valo-black);
+    color: var(--valo-white);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--valo-red);
+    padding: 1rem;
+}
+
+nav a {
+    color: var(--valo-white);
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 20px;
+    text-transform: uppercase;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border-left: 5px solid var(--valo-red);
+    background-color: var(--valo-gray);
+}
+
+h1 {
+    text-transform: uppercase;
+    font-style: italic;
+    color: var(--valo-red);
+}
+
+.stats-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+}
