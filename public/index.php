@@ -1,15 +1,14 @@
 <?php
 // --- 1. LOGIQUE (PHP) ---
 session_start();
-require 'db.php';
+require '../config/db.php';
 
 $stmt = $pdo->query("SELECT * FROM games ORDER BY id DESC");
 $games = $stmt->fetchAll();
 
-$page_title = "Accueil - Protocol Valorant";
+$page_title = "Accueil";
 
-include 'templates/header.php';
-?>
+include '../templates/header.php';?>
 
     <section class="hero">
         <p class="hero-status">// STATUT : CONNECTÉ</p>
@@ -38,8 +37,8 @@ include 'templates/header.php';
                 <?php foreach ($games as $game): ?>
                     <div class="mission-card">
                         <div class="card-img-wrapper">
-                            <?php if (!empty($game['image']) && file_exists('assets/img/games/' . $game['image'])): ?>
-                                <img src="assets/img/games/<?= htmlspecialchars($game['image']) ?>"
+                            <?php if (!empty($game['image']) && file_exists('../assets/img/games/' . $game['image'])): ?>
+                                <img src="/php-valo/assets/img/games/<?= htmlspecialchars($game['image']) ?>"
                                      alt="<?= htmlspecialchars($game['name']) ?>"
                                      class="game-cover">
                             <?php else: ?>
@@ -65,4 +64,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

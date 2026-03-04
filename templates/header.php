@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $page_title ?? 'VALORANT' ?></title>
 
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Chemins CSS absolus depuis la racine du serveur -->
+    <link rel="stylesheet" href="/php-valo/assets/css/style.css">
 
     <?php if (isset($page_css)): ?>
-        <link rel="stylesheet" href="assets/css/<?= $page_css ?>.css">
+        <link rel="stylesheet" href="/php-valo/assets/css/<?= $page_css ?>.css">
     <?php endif; ?>
 </head>
 <body>

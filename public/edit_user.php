@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require '../config/db.php';;
 
 // --- SÉCURITÉ ---
 // Seul un ADMIN peut accéder à cette page
@@ -41,8 +41,7 @@ if (!$user) {
     die("Agent introuvable.");
 }
 
-include 'templates/header.php';
-?>
+include '../templates/header.php';?>
 
     <style>
         :root {
@@ -181,4 +180,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

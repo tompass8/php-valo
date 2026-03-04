@@ -1,0 +1,269 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃     🎯 GUIDE DE TEST - PROJET VALORANT PHP                    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+═══════════════════════════════════════════════════════════════
+  ÉTAPE 1 : CORRECTION DE LA BASE DE DONNÉES (OBLIGATOIRE !)
+═══════════════════════════════════════════════════════════════
+
+1. Ouvrir phpMyAdmin : http://localhost/phpmyadmin
+
+2. Sélectionner la base de données "projet_valorant" dans le menu de gauche
+
+3. Cliquer sur l'onglet "SQL" en haut
+
+4. Copier-coller ce code SQL :
+
+   ┌──────────────────────────────────────────────────┐
+   │ USE projet_valorant;                             │
+   │                                                   │
+   │ ALTER TABLE games                                 │
+   │ CHANGE COLUMN image_url image VARCHAR(255);      │
+   └──────────────────────────────────────────────────┘
+
+5. Cliquer sur "Exécuter"
+
+6. Vous devriez voir : "1 ligne(s) affectée(s)"
+
+✅ Base de données corrigée !
+
+
+═══════════════════════════════════════════════════════════════
+  ÉTAPE 2 : DÉMARRER XAMPP
+═══════════════════════════════════════════════════════════════
+
+1. Ouvrir le Panneau de Contrôle XAMPP
+
+2. Démarrer les services :
+   ☐ Apache (Start)
+   ☐ MySQL (Start)
+
+3. Vérifier que les deux sont en vert avec "Running"
+
+
+═══════════════════════════════════════════════════════════════
+  ÉTAPE 3 : TESTER LE SITE
+═══════════════════════════════════════════════════════════════
+
+🌐 OPTION 1 : Avec .htaccess (Redirection automatique)
+   http://localhost/php-valo/
+
+🌐 OPTION 2 : Accès direct (Si .htaccess ne fonctionne pas)
+   http://localhost/php-valo/public/index.php
+
+
+───────────────────────────────────────────────────────────────
+  TESTS À EFFECTUER :
+───────────────────────────────────────────────────────────────
+
+☐ Page d'accueil s'affiche correctement
+☐ Le CSS se charge (style noir/rouge Valorant)
+☐ Le menu de navigation est visible en haut
+☐ Les cartes de jeux s'affichent
+☐ Les images des jeux sont visibles (si présentes)
+☐ L'animation du scanner laser dans le menu fonctionne
+☐ Au survol des cartes, l'effet de zoom fonctionne
+
+
+───────────────────────────────────────────────────────────────
+  NAVIGATION À TESTER :
+───────────────────────────────────────────────────────────────
+
+☐ Connexion : http://localhost/php-valo/public/login.php
+☐ Inscription : http://localhost/php-valo/public/register.php
+☐ Profil : http://localhost/php-valo/public/profil.php
+☐ Admin : http://localhost/php-valo/public/admin.php (si admin)
+
+
+═══════════════════════════════════════════════════════════════
+  ÉTAPE 4 : VÉRIFIER LES RESSOURCES (F12)
+═══════════════════════════════════════════════════════════════
+
+1. Ouvrir le site dans Chrome/Firefox
+
+2. Appuyer sur F12 pour ouvrir la Console Développeur
+
+3. Aller dans l'onglet "Réseau" (Network)
+
+4. Recharger la page (Ctrl + R)
+
+5. Vérifier qu'il n'y a pas d'erreurs 404 :
+
+   ✅ CORRECT :
+   - style.css : 200 OK
+   - header.php : 200 OK
+   - Images : 200 OK
+
+   ❌ ERREUR (si vous voyez du 404) :
+   - Vérifier les chemins dans le code
+   - Vérifier que les fichiers existent
+
+
+═══════════════════════════════════════════════════════════════
+  ÉTAPE 5 : TESTER L'ADMINISTRATION
+═══════════════════════════════════════════════════════════════
+
+Si vous avez un compte administrateur :
+
+1. Se connecter avec un compte admin
+
+2. Accéder au Dashboard Admin
+
+3. Tester l'ajout d'un jeu :
+   ☐ Nom : TEST GAME
+   ☐ Type : FPS
+   ☐ Description : Test de mission
+   ☐ Image : test.jpg (optionnel)
+
+4. Vérifier que le jeu apparaît sur la page d'accueil
+
+5. Tester la modification du jeu
+
+6. Tester la suppression du jeu
+
+
+═══════════════════════════════════════════════════════════════
+  DÉPANNAGE DES PROBLÈMES COURANTS
+═══════════════════════════════════════════════════════════════
+
+❌ PROBLÈME : Page blanche
+   → Solution : Vérifier les logs Apache dans XAMPP
+   → Solution : Activer l'affichage des erreurs PHP
+   → Vérifier : config/db.php (port 3307 ?)
+
+❌ PROBLÈME : "Unknown column 'image'"
+   → Solution : Exécuter le script SQL de l'Étape 1
+
+❌ PROBLÈME : CSS ne se charge pas
+   → Vérifier : URL contient /public/
+   → Vérifier : F12 → Onglet Réseau → style.css en 404 ?
+   → Solution : Chemins corrigés (../assets/css/)
+
+❌ PROBLÈME : Images ne s'affichent pas
+   → Vérifier : Fichiers dans assets/img/games/
+   → Vérifier : Noms corrects en base de données
+   → Vérifier : Chemins utilisent ../assets/img/
+
+❌ PROBLÈME : .htaccess ne fonctionne pas
+   → Vérifier : mod_rewrite activé dans httpd.conf
+   → Solution temporaire : Utiliser /public/ dans l'URL
+
+❌ PROBLÈME : Erreur de connexion à la BDD
+   → Vérifier : MySQL démarré dans XAMPP
+   → Vérifier : Port 3307 dans config/db.php
+   → Vérifier : Base de données "projet_valorant" existe
+
+
+═══════════════════════════════════════════════════════════════
+  FICHIERS CORRIGÉS AUTOMATIQUEMENT
+═══════════════════════════════════════════════════════════════
+
+✅ public/index.php
+   • require '../config/db.php'
+   • include '../templates/header.php'
+   • include '../templates/footer.php'
+   • Images : ../assets/img/games/
+
+✅ public/admin.php
+   • include '../templates/footer.php'
+
+✅ public/profil.php
+   • include '../templates/footer.php'
+
+✅ public/login.php
+   • include '../templates/footer.php'
+
+✅ public/register.php
+   • include '../templates/footer.php'
+
+✅ public/admin_game_add.php
+   • include '../templates/footer.php'
+
+✅ public/admin_game_edit.php
+   • include '../templates/footer.php'
+
+✅ public/edit_user.php
+   • include '../templates/footer.php'
+
+✅ templates/header.php
+   • href="../assets/css/style.css"
+   • href="../assets/css/{page_css}.css"
+
+✅ config/db.php
+   • Connexion PDO améliorée
+   • FETCH_ASSOC activé
+
+✅ assets/css/style.css
+   • Effets Valorant améliorés
+   • Animations boutons
+   • Cartes avec bordures néon
+
+
+═══════════════════════════════════════════════════════════════
+  CHECKLIST FINALE
+═══════════════════════════════════════════════════════════════
+
+Avant de dire que c'est terminé :
+
+☐ Script SQL exécuté dans phpMyAdmin
+☐ Apache et MySQL démarrés
+☐ Site accessible via /public/
+☐ CSS chargé correctement (style noir/rouge)
+☐ Menu de navigation fonctionnel
+☐ Connexion/Déconnexion fonctionne
+☐ Page profil accessible
+☐ Dashboard admin accessible (si admin)
+☐ Ajout/Modification/Suppression de jeux fonctionne
+☐ Pas d'erreurs dans la console F12
+
+
+═══════════════════════════════════════════════════════════════
+  RÉSUMÉ DES CHANGEMENTS
+═══════════════════════════════════════════════════════════════
+
+🎯 Problème 1 : Chemins PHP cassés
+   ✅ Solution : Tous les include/require utilisent ../
+
+🎯 Problème 2 : CSS ne se charge pas
+   ✅ Solution : Chemins CSS dans header.php utilisent ../
+
+🎯 Problème 3 : Images introuvables
+   ✅ Solution : Chemins images utilisent ../assets/
+
+🎯 Problème 4 : Unknown column 'image'
+   ✅ Solution : Script SQL ALTER TABLE fourni
+
+🎯 Problème 5 : Pas de style Valorant
+   ✅ Solution : CSS amélioré avec effets néon/rouge
+
+
+═══════════════════════════════════════════════════════════════
+  📚 DOCUMENTATION DISPONIBLE
+═══════════════════════════════════════════════════════════════
+
+📄 README_CORRECTIONS.md
+   → Documentation complète du projet
+
+📄 RESUME_CORRECTIONS.txt
+   → Résumé visuel des corrections
+
+📄 config/fix_database.sql
+   → Script SQL de correction
+
+📄 .htaccess
+   → Redirection automatique vers /public/
+
+📄 GUIDE_TEST.txt (ce fichier)
+   → Guide de test étape par étape
+
+
+═══════════════════════════════════════════════════════════════
+
+✨ Toutes les corrections ont été appliquées automatiquement !
+   Il ne vous reste qu'à exécuter le script SQL et tester.
+
+🚀 Bon courage, Agent !
+
+═══════════════════════════════════════════════════════════════
+

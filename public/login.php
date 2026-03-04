@@ -1,8 +1,7 @@
 <?php
 // --- LOGIQUE (BACK) ---
 session_start();
-require_once 'db.php';
-
+require '../config/db.php';
 // Si l'utilisateur est déjà connecté, on l'envoie direct au profil
 if (isset($_SESSION['user_id'])) {
     header('Location: profil.php');
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // --- AFFICHAGE (FRONT) ---
-include 'templates/header.php';
+include '../templates/header.php';
 ?>
 
     <style>
@@ -207,4 +206,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

@@ -1,7 +1,6 @@
 <?php
 session_start(); // On démarre la session pour gérer les messages éventuels
-require 'db.php';
-
+require '../config/db.php';
 $message = ""; // Pour afficher les erreurs ou succès
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-include 'templates/header.php';
+include '../templates/header.php';
 ?>
 
     <div class="main-container" style="display: flex; justify-content: center; align-items: center; min-height: 80vh; flex-direction: column;">
@@ -75,4 +74,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

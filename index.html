@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirection - Projet Valorant PHP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f1923 0%, #1f2731 100%);
+            color: #ece8e1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(31, 39, 49, 0.8);
+            border: 2px solid #ff4655;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 70, 85, 0.3);
+        }
+
+        h1 {
+            color: #ff4655;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .status {
+            color: #ff4655;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ff4655;
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 10px;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 70, 85, 0.3);
+        }
+
+        .btn:hover {
+            background: #ff2a3d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 30px rgba(255, 70, 85, 0.6);
+        }
+
+        .info {
+            background: rgba(255, 70, 85, 0.1);
+            border-left: 4px solid #ff4655;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .info h3 {
+            color: #ff4655;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info li:before {
+            content: "✓";
+            color: #ff4655;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .countdown {
+            font-size: 3em;
+            color: #ff4655;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    </style>
+    <script>
+        // Redirection automatique après 5 secondes
+        let countdown = 5;
+
+        function updateCountdown() {
+            document.getElementById('countdown').textContent = countdown;
+            countdown--;
+
+            if (countdown < 0) {
+                window.location.href = 'public/index.php';
+            }
+        }
+
+        window.onload = function() {
+            setInterval(updateCountdown, 1000);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="status">// PROTOCOLE DE REDIRECTION ACTIVÉ</div>
+        <h1>🎯 VALORANT PHP</h1>
+
+        <p>Le site a été restructuré avec une architecture professionnelle.</p>
+        <p>Vous allez être redirigé automatiquement dans :</p>
+
+        <div class="countdown loading">
+            <span id="countdown">5</span>
+        </div>
+
+        <a href="public/index.php" class="btn">ACCÉDER MAINTENANT</a>
+
+        <div class="info">
+            <h3>✅ Corrections Appliquées</h3>
+            <ul>
+                <li>Chemins PHP corrigés (../)</li>
+                <li>CSS et images relocalisés</li>
+                <li>Style Valorant (Noir/Rouge/Gris)</li>
+                <li>Structure /public/ professionnelle</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>⚠️ Action Requise</h3>
+            <p style="padding: 0;">
+                <strong>Exécuter le script SQL :</strong> config/fix_database.sql<br>
+                Pour corriger la colonne 'image' dans phpMyAdmin
+            </p>
+        </div>
+
+        <p style="font-size: 0.9em; color: #888; margin-top: 30px;">
+            Documentation disponible : README_CORRECTIONS.md, GUIDE_TEST.txt
+        </p>
+    </div>
+</body>
+</html>
+

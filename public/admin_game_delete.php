@@ -1,7 +1,6 @@
 <?php
 session_start();
-require __DIR__ . '/db.php';
-
+require '../config/db.php';
 // Sécurité
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     die("Accès non autorisé");

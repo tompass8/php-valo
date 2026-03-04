@@ -1,11 +1,11 @@
 <?php
 // --- 1. LOGIQUE (PHP) ---
 session_start();
-require 'db.php';
+require '../config/db.php';
 
 // Sécurité : Accès restreint aux administrateurs
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
-    header('Location: index.php');
+    header('Location: ..\index.php');
     exit();
 }
 
@@ -20,7 +20,8 @@ $users = $stmtUsers->fetchAll();
 $page_title = "Dashboard Admin - Valorant";
 $page_css = "admin";
 
-include 'templates/header.php';
+include '../templates/header.php';
+
 ?>
 
     <div class="admin-container">
@@ -94,4 +95,4 @@ include 'templates/header.php';
         </section>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

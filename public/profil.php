@@ -1,8 +1,7 @@
 <?php
 // --- 1. LOGIQUE (PHP) ---
 session_start();
-require 'db.php';
-
+require '../config/db.php';
 // Vérif connexion
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -37,8 +36,7 @@ $succes = $stmtSucces->fetchAll();
 $page_title = "Dossier Agent - " . htmlspecialchars($user['pseudo']);
 $page_css = "profil";
 
-include 'templates/header.php';
-?>
+include '../templates/header.php';?>
 
     <div class="profil-container">
 
@@ -79,4 +77,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

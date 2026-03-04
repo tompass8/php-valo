@@ -1,8 +1,7 @@
 <?php
 // --- 1. LOGIQUE (PHP) ---
 session_start();
-require __DIR__ . '/db.php';
-
+require '../config/db.php';
 // Sécurité : Accès Admin uniquement
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: index.php');
@@ -46,8 +45,7 @@ if (!$game) {
 $page_title = "Modifier Mission : " . htmlspecialchars($game['name']);
 $page_css = "admin";
 
-include 'templates/header.php';
-?>
+include '../templates/header.php';?>
 
     <div class="add-container">
         <div class="form-card">
@@ -82,4 +80,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>

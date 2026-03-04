@@ -1,0 +1,38 @@
+# ==========================================
+# Configuration Apache pour PHP Valorant
+# ==========================================
+
+# Redirection automatique vers /public/
+# Si vous accédez à http://localhost/php-valo/
+# Vous serez redirigé vers http://localhost/php-valo/public/
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Si la requête n'est pas déjà dans /public/
+    RewriteCond %{REQUEST_URI} !^/php-valo/public/
+
+    # Et si le fichier/dossier n'existe pas à la racine
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Rediriger vers /public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Protection des fichiers sensibles
+<FilesMatch "(\.htaccess|\.env|db\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Page d'index par défaut
+DirectoryIndex public/index.php
+
+# Activer l'affichage des erreurs PHP (DÉVELOPPEMENT UNIQUEMENT)
+php_flag display_errors On
+php_value error_reporting E_ALL
+
+# Charset par défaut
+AddDefaultCharset UTF-8
+

@@ -1,8 +1,7 @@
 <?php
 // --- 1. LOGIQUE (PHP) ---
 session_start();
-require __DIR__ . '/db.php';
-
+require '../config/db.php';
 // Sécurité : Accès Admin uniquement
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: index.php');
@@ -18,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['name'],
             $_POST['type'],
             $_POST['description'],
-            $_POST['image_url'] // On garde le champ texte pour l'instant comme dans ton code
+            $_POST['image_url']// On garde le champ texte pour l'instant comme dans ton code
     ]);
 
     header('Location: admin.php');
@@ -28,8 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = "Nouvelle Mission - Admin";
 $page_css = "admin"; // On utilise admin.css pour le style
 
-include 'templates/header.php';
-?>
+include '../templates/header.php';?>
 
     <div class="add-container">
         <div class="form-card">
@@ -64,4 +62,4 @@ include 'templates/header.php';
         </div>
     </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include '../templates/footer.php'; ?>
