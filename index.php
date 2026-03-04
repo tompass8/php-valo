@@ -1,15 +1,14 @@
 <?php
 session_start();
-require_once 'db.php';
+require 'db.php';
 
-// Récupération des jeux
-if (isset($pdo)) {
-    $sql = "SELECT * FROM games ORDER BY id DESC";
-    $stmt = $pdo->query($sql);
-    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    $games = [];
-}
+// 1. Récupération des jeux (Missions disponibles)
+$stmt = $pdo->query("SELECT * FROM games ORDER BY id DESC LIMIT 6");
+$games = $stmt->fetchAll();
+
+// 2. Vérifier si l'utilisateur est connecté pour personnaliser le message
+$isLoggedIn = isset($_SESSION['user_id']);
+$pseudo = $isLoggedIn ? $_SESSION['pseudo'] ?? 'Agent' : 'Invité';
 
 include 'templates/header.php';
 ?>
@@ -18,102 +17,233 @@ include 'templates/header.php';
         :root {
             --val-red: #ff4655;
             --val-dark: #0f1923;
+            --val-card: #1f2731; /* Un peu plus clair que le fond */
             --val-text: #ece8e1;
-            --val-card-bg: #1f2731;
         }
+
         body {
             background-color: var(--val-dark);
             color: var(--val-text);
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
         }
-        .hero {
-            background: linear-gradient(rgba(15, 25, 35, 0.8), rgba(15, 25, 35, 0.9)), url('https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/blt3f072436ec0dc39e/6203027b6869680b54070a72/VALORANT_Jett_Tease_1920x1080_no_text.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 100px 20px;
+
+        /* HERO SECTION (Bannière du haut) */
+        .hero-section {
+            background: linear-gradient(135deg, #0f1923 0%, #1f2731 100%);
+            padding: 80px 20px;
             text-align: center;
             border-bottom: 4px solid var(--val-red);
+            position: relative;
+            overflow: hidden;
         }
-        .hero h1 {
-            font-size: 4rem;
+
+        /* Effet de fond géométrique */
+        .hero-section::before {
+            content: "VALORANT";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10em;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5em;
             text-transform: uppercase;
-            margin-bottom: 20px;
-            color: white;
+            margin: 0;
+            letter-spacing: 2px;
+            font-weight: 800;
         }
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            margin: 10px;
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #ff4655;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* BOUTONS D'ACTION (HERO) */
+        .cta-container {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-hero {
+            padding: 15px 40px;
+            background: var(--val-red);
+            color: white;
             text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            /* Forme géométrique typique de Valorant */
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-hero:hover {
+            background: white;
+            color: var(--val-dark);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid white;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Carré simple */
+        }
+        .btn-secondary:hover {
+            background: white;
+            color: var(--val-dark);
+        }
+
+        /* GRILLE DES JEUX (MISSIONS) */
+        .games-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            border-left: 5px solid var(--val-red);
+            padding-left: 20px;
+            font-size: 2em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: var(--val-card);
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--val-red);
+            box-shadow: 0 10px 30px rgba(255, 70, 85, 0.2);
+        }
+
+        /* Image placeholder pour le jeu */
+        .game-img-placeholder {
+            height: 180px;
+            background: #2c3540;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .game-type {
+            font-size: 0.8em;
+            color: var(--val-red);
             text-transform: uppercase;
             font-weight: bold;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: var(--val-text);
-            transition: 0.3s;
+            margin-bottom: 15px;
+            display: inline-block;
+            border: 1px solid var(--val-red);
+            padding: 2px 8px;
         }
-        .btn-primary { background-color: var(--val-red); border-color: var(--val-red); color: white; }
-        .btn-primary:hover { background-color: #d93644; }
-        .btn-secondary:hover { background-color: rgba(255, 255, 255, 0.1); border-color: white; }
-        .btn-admin { background-color: #8b0000; border-color: #8b0000; }
 
-        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
-        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .game-card { background-color: var(--val-card-bg); border: 1px solid #333; transition: transform 0.2s; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--val-red); }
-        .game-image { width: 100%; height: 200px; object-fit: cover; border-bottom: 4px solid var(--val-red); }
-        .game-info { padding: 20px; }
-        .game-title { font-size: 1.5rem; margin: 5px 0 10px 0; text-transform: uppercase; }
-        .game-type { color: var(--val-red); font-weight: bold; text-transform: uppercase; font-size: 0.9rem; }
+        .game-desc {
+            color: #aaa;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
     </style>
 
-    <section class="hero">
-        <h1>Valorant Protocol</h1>
+    <div class="hero-section">
+        <div class="hero-content">
+            <?php if ($isLoggedIn): ?>
+                <div class="subtitle">// STATUT : CONNECTÉ</div>
+                <h1>BIEVENUE, AGENT <?= htmlspecialchars($pseudo) ?></h1>
+                <p style="color:#aaa; max-width:600px; margin: 20px auto;">
+                    Prêt à déployer ? Consultez les missions disponibles ou gérez votre profil.
+                </p>
 
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <div class="hero-welcome">
-                Bon retour, Agent <strong><?= htmlspecialchars($_SESSION['pseudo']) ?></strong>
-            </div>
+                <div class="cta-container">
+                    <a href="profil.php" class="btn-hero">MON DOSSIER</a>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                        <a href="admin.php" class="btn-hero btn-secondary">ADMINISTRATION</a>
+                    <?php endif; ?>
+                </div>
 
-            <a href="profil.php" class="btn btn-secondary">Mon Profil</a>
+            <?php else: ?>
+                <div class="subtitle">// PROTOCOLE VALORANT</div>
+                <h1>REJOIGNEZ LES RANGS</h1>
+                <p style="color:#aaa; max-width:600px; margin: 20px auto;">
+                    Une équipe mondiale. Des pouvoirs uniques. Connectez-vous pour accéder aux données classifiées.
+                </p>
 
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="admin.php" class="btn btn-primary btn-admin">Dashboard Admin</a>
+                <div class="cta-container">
+                    <a href="login.php" class="btn-hero">CONNEXION</a>
+                    <a href="register.php" class="btn-hero btn-secondary">S'INSCRIRE</a>
+                </div>
             <?php endif; ?>
+        </div>
+    </div>
 
-            <a href="logout.php" class="btn btn-secondary">Déconnexion</a>
-
-        <?php else: ?>
-            <div class="hero-welcome">Rejoignez les rangs. Défiez les limites.</div>
-            <a href="register.php" class="btn btn-primary">S'inscrire</a>
-            <a href="login.php" class="btn btn-secondary">Se connecter</a>
-        <?php endif; ?>
-    </section>
-
-    <div class="container">
-        <h2 style="border-left: 5px solid #ff4655; padding-left: 15px;">Missions Disponibles</h2>
+    <div class="games-container">
+        <h2 class="section-title">MISSIONS DISPONIBLES</h2>
 
         <?php if (count($games) > 0): ?>
             <div class="games-grid">
                 <?php foreach ($games as $game): ?>
-                    <article class="game-card">
-                        <?php if (!empty($game['image_url'])): ?>
-                            <img src="<?= htmlspecialchars($game['image_url']) ?>" alt="Jeu" class="game-image">
-                        <?php else: ?>
-                            <img src="https://via.placeholder.com/400x200/1f2731/ece8e1?text=VALORANT" alt="No Image" class="game-image">
-                        <?php endif; ?>
+                    <div class="game-card">
+                        <div class="game-img-placeholder">
+                            <?= htmlspecialchars($game['type']) ?>
+                        </div>
 
                         <div class="game-info">
-                            <div class="game-type"><?= htmlspecialchars($game['type']) ?></div>
+                            <div class="game-type">// TYPE : <?= htmlspecialchars($game['type']) ?></div>
                             <h3 class="game-title"><?= htmlspecialchars($game['name']) ?></h3>
-                            <p><?= htmlspecialchars($game['description']) ?></p>
+                            <p class="game-desc">
+                                Une nouvelle mission tactique. Préparez votre équipe et défiez les limites.
+                            </p>
                         </div>
-                    </article>
+                    </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>Aucune mission disponible.</p>
+            <p style="color: #aaa; font-style: italic;">Aucune mission disponible pour le moment.</p>
         <?php endif; ?>
+
     </div>
 
 <?php include 'templates/footer.php'; ?>
