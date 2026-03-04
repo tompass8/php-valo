@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['image_url']// On garde le champ texte pour l'instant comme dans ton code
     ]);
 
-    header('Location: admin.php');
+    header('Location: /php-valo/public/admin.php');
     exit();
 }
 
