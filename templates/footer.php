@@ -1,6 +1,6 @@
 </main>
 <footer>
-    <p>&copy; 2026 Projet Valorant - PHP & MySQL</p>
+    <p>&copy; 2026 Projet Valo - PHP & MySQL</p>
 </footer>
 </body>
 </html>

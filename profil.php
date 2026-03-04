@@ -10,84 +10,63 @@ if (!isset($_SESSION['user_id'])) {
 
 $id = $_SESSION['user_id'];
 
-// 1. TRAITEMENT DU FORMULAIRE (Mise à jour du Genre)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profil'])) {
-    $nouveau_genre = $_POST['genre'];
-
-    // On prépare la requête (Sécurité contre injection SQL)
-    $stmt = $pdo->prepare("UPDATE users SET genre = ? WHERE id = ?");
-    $stmt->execute([$nouveau_genre, $id]);
-
-    // On rafraichit la page pour voir le changement
-    header("Location: profil.php");
-    exit();
-}
-
-// 2. RÉCUPÉRATION DES INFOS USER
+// 1. Récupération User
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 
-// Sécurité : Si l'utilisateur n'est pas trouvé (ex: id supprimé), on arrête
-if (!$user) {
-    die("Erreur : Utilisateur introuvable.");
-}
+if (!$user) die("Erreur : Agent introuvable.");
 
-// 3. RÉCUPÉRATION DES SUCCÈS
+// 2. Récupération Succès
 $stmtSucces = $pdo->query("SELECT * FROM achievements");
 $succes = $stmtSucces->fetchAll();
+
+// Configuration de la page
+$page_title = "Dossier Agent - " . htmlspecialchars($user['pseudo']);
+$page_css = "profil"; // Charge assets/css/profil.css
 
 include 'templates/header.php';
 ?>
 
-    <div class="main-container" style="padding: 40px; color: white;">
+    <div class="profil-container">
 
-        <h1 style="color: #ff4655; font-size: 3em; text-transform: uppercase;">
-            AGENT : <?= htmlspecialchars($user['pseudo']) ?>
+        <h1 class="agent-title">
+            AGENT : <span style="color: white;"><?= htmlspecialchars($user['pseudo']) ?></span>
         </h1>
 
-        <div class="profile-grid" style="display: flex; gap: 40px; flex-wrap: wrap;">
+        <div class="profile-grid">
 
-            <div class="card" style="background: #1f2731; padding: 20px; border-left: 5px solid #ff4655; flex: 1;">
+            <div class="card-dossier">
                 <h2>// DOSSIER PERSONNEL</h2>
-                <p><strong>Matricule (Email) :</strong> <?= htmlspecialchars($user['email']) ?></p>
-
-                <p><strong>Temps de service (Jeu) :</strong> <?= rand(50, 5000) ?> heures</p>
-
-                <p style="color: #ff4655;"><strong>☠️ Fin de service estimée :</strong> <?= htmlspecialchars($user['date_mort'] ?? 'Inconnue') ?></p>
-
-                <hr style="border-color: #333; margin: 20px 0;">
-
-                <form method="POST">
-                    <label>Genre de l'Agent :</label><br>
-                    <select name="genre" style="padding: 10px; background: #0f1923; color: white; border: 1px solid #555;">
-                        <?php $genre = $user['genre'] ?? ''; ?>
-
-                        <option value="Non spécifié" <?= $genre == 'Non spécifié' ? 'selected' : '' ?>>Non spécifié</option>
-                        <option value="Homme" <?= $genre == 'Homme' ? 'selected' : '' ?>>Homme</option>
-                        <option value="Femme" <?= $genre == 'Femme' ? 'selected' : '' ?>>Femme</option>
-                        <option value="Radiant" <?= $genre == 'Radiant' ? 'selected' : '' ?>>Radiant</option>
-                        <option value="Autre" <?= $genre == 'Autre' ? 'selected' : '' ?>>Autre</option>
-                    </select>
-                    <button type="submit" name="update_profil" class="btn" style="background: #ff4655; color: white; padding: 10px 20px; border: none; cursor: pointer; margin-top: 10px;">
-                        METTRE À JOUR
-                    </button>
-                </form>
+                <p><strong>Matricule :</strong> <?= htmlspecialchars($user['email']) ?></p>
+                <p><strong>Temps de service :</strong> <?= rand(50, 5000) ?> H</p>
+                <p><strong>Dernière connexion :</strong> <?= date('d/m/Y H:i') ?></p>
             </div>
 
-            <div class="card" style="flex: 1;">
-                <h2 style="border-bottom: 2px solid #ff4655; display: inline-block;">// MÉDAILLES & SUCCÈS</h2>
+            <div class="card-dossier">
+                <h2>// MÉDAILLES & SUCCÈS</h2>
 
-                <div class="achievements-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                <div class="achievements-grid">
                     <?php if ($succes): ?>
                         <?php foreach ($succes as $s): ?>
-                            <div class="achievement-item" style="background: #0f1923; padding: 15px; border: 1px solid #333;">
-                                <strong style="color: #ff4655;"><?= htmlspecialchars($s['name']) ?></strong>
-                                <p style="font-size: 0.9em; color: #ccc;"><?= htmlspecialchars($s['description']) ?></p>
+                            <div class="achievement-item">
+                                <?php if (!empty($s['image'])): ?>
+                                    <img src="assets/img/achievements/<?= htmlspecialchars($s['image']) ?>"
+                                         alt="<?= htmlspecialchars($s['name']) ?>"
+                                         class="achievement-icon">
+                                <?php else: ?>
+                                    <img src="assets/img/default_badge.png" class="achievement-icon" alt="Locked">
+                                <?php endif; ?>
+
+                                <span class="achievement-name"><?= htmlspecialchars($s['name']) ?></span>
+
+                                <p class="achievement-desc">
+                                    <?= htmlspecialchars($s['description'] ?? 'Aucune description.') ?>
+                                </p>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>Aucun succès disponible.</p>
+                        <p style="color:#888;">Aucune médaille obtenue pour le moment.</p>
                     <?php endif; ?>
                 </div>
             </div>
